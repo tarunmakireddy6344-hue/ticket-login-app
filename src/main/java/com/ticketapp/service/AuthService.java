@@ -24,4 +24,19 @@ public class AuthService {
         }
         return false;
     }
+
+    public boolean register(com.ticketapp.dto.SignupRequest signupRequest) {
+        if (userRepository.findByUsername(signupRequest.getUsername()).isPresent()) {
+            return false; // Username already exists
+        }
+
+        User newUser = new User(
+            signupRequest.getUsername(),
+            signupRequest.getPassword(),
+            signupRequest.getEmail()
+        );
+
+        userRepository.save(newUser);
+        return true;
+    }
 }

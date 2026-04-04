@@ -2,6 +2,7 @@ package com.ticketapp.controller;
 
 import com.ticketapp.dto.LoginRequest;
 import com.ticketapp.dto.LoginResponse;
+import com.ticketapp.dto.SignupRequest;
 import com.ticketapp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,18 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                                  .body(new LoginResponse(false, "Invalid username or password", null));
+        }
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<LoginResponse> signup(@RequestBody SignupRequest signupRequest) {
+        boolean isRegistered = authService.register(signupRequest);
+        
+        if (isRegistered) {
+            return ResponseEntity.ok(new LoginResponse(true, "Signup Successful! You can now log in.", null));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body(new LoginResponse(false, "Username already exists. Please choose a different one.", null));
         }
     }
 }
