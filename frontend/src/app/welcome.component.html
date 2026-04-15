@@ -1,0 +1,111 @@
+<main class="welcome-container">
+  <div class="background-effects">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Navbar / Actions -->
+    <div class="top-nav">
+      <div class="logo">
+        <span class="logo-accent">P</span>ortal
+      </div>
+      <a routerLink="/" class="logout-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        Logout
+      </a>
+    </div>
+
+    <!-- Top Dashboard Bar -->
+    <div class="dashboard-bar">
+      <div class="stats-group">
+        <div class="stat-item">
+          <span class="stat-label">System Time</span>
+          <span class="stat-value">{{ currentTime() }}</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-label">Date</span>
+          <span class="stat-value">{{ currentDate() }}</span>
+        </div>
+      </div>
+      
+      <div class="weather-widget">
+        <div class="weather-info">
+          <span class="weather-temp">24°C</span>
+          <span class="weather-desc">Partly Cloudy</span>
+        </div>
+        <div class="weather-icon-wrapper">
+          <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span class="status-text">System Status: Active</span>
+      </div>
+      <h1 class="welcome-title">Welcome, {{ username() }}</h1>
+      <p class="subtitle">All your essential services, refined into one seamless dashboard.</p>
+      
+      <div class="search-container">
+        <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input 
+          type="text" 
+          placeholder="Search for tickets, food, or shopping..." 
+          (input)="onSearch($event)"
+          class="search-input"
+        >
+      </div>
+    </section>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid">
+      @for (service of filteredServices(); track service.title) {
+        <div class="service-card" [class.featured-card]="service.featured" (click)="navigateTo(service.url)">
+          <div class="card-glow" [style.background]="service.color"></div>
+          
+          <div class="card-header">
+            @if (service.featured) {
+              <span class="featured-badge">TRENDING</span>
+            } @else {
+              <span class="category-badge">{{ service.category }}</span>
+            }
+            <div class="card-icon" [style.color]="service.color">
+              <!-- Inline icon mapping or just a generic placeholder for now -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+            </div>
+          </div>
+
+          <div class="card-content">
+            <h2>{{ service.title }}</h2>
+            <p>{{ service.description }}</p>
+          </div>
+
+          <div class="card-footer">
+            <span class="action-text">Launch Service</span>
+            <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </div>
+        </div>
+      } @empty {
+        <div class="no-results">
+          <p>No services found matching your search.</p>
+        </div>
+      }
+    </div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="pulse-dot"></div>
+        <p class="creator-stamp">Securely verified session by <span class="creator-name">Advanced Portal Engine</span></p>
+      </div>
+    </footer>
+  </div>
+</main>

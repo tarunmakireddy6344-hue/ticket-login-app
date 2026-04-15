@@ -1,0 +1,138 @@
+<main class="login-container">
+  <!-- Decorative background elements -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="glass-panel">
+    <div class="login-header">
+      <h1>Booking Portal</h1>
+      <p>Sign in to access your Booking</p>
+    </div>
+
+    <form class="login-form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      
+      <!-- Error Message Banner -->
+      @if (errorMessage()) {
+        <div class="error-banner">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <!-- Success Message Banner -->
+      @if (successMessage()) {
+        <div class="success-banner">
+          {{ successMessage() }}
+        </div>
+      }
+
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          [(ngModel)]="credentials.username" 
+          required 
+          placeholder="Enter username (e.g. admin)"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="credentials.password" 
+          required 
+          placeholder="Enter password (e.g. password123)"
+        />
+      </div>
+
+      <div class="footer-links">
+        <a (click)="toggleForgotPasswordModal(true)">Forgot Password?</a>
+      </div>
+
+      <button type="submit" [disabled]="isLoading()">
+          {{ isLoading() ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <div class="footer-links">
+      <p>Don't have an account? <a (click)="toggleSignupModal(true)">Create one</a></p>
+    </div>
+  </div>
+</main>
+
+<!-- Forgot Password Modal -->
+@if (isForgotPasswordModalOpen()) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Reset Password</h2>
+        <button class="close-btn" (click)="toggleForgotPasswordModal(false)">&times;</button>
+      </div>
+
+      <form (ngSubmit)="onForgotPassword()" #forgotForm="ngForm">
+        <p class="modal-description">Enter your email and we'll send you a link to reset your password.</p>
+
+        @if (errorMessage()) {
+          <div class="error-banner">{{ errorMessage() }}</div>
+        }
+        @if (successMessage()) {
+          <div class="success-banner">{{ successMessage() }}</div>
+        }
+
+        <div class="input-group">
+          <label for="forgot-email">Email Address</label>
+          <input type="email" id="forgot-email" name="email" [(ngModel)]="forgotPasswordEmail" required placeholder="Enter your registered email">
+        </div>
+
+        <button type="submit" [disabled]="!forgotForm.form.valid || isLoading()">
+          {{ isLoading() ? 'Sending...' : 'Send Reset Link' }}
+        </button>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Signup Modal -->
+@if (isSignupModalOpen()) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Create Account</h2>
+        <button class="close-btn" (click)="toggleSignupModal(false)">&times;</button>
+      </div>
+
+      <form (ngSubmit)="onSignup()" #signupForm="ngForm">
+        @if (errorMessage()) {
+          <div class="error-banner">{{ errorMessage() }}</div>
+        }
+        @if (successMessage()) {
+          <div class="success-banner">{{ successMessage() }}</div>
+        }
+
+        <div class="input-group">
+          <label for="reg-username">Username</label>
+          <input type="text" id="reg-username" name="username" [(ngModel)]="signupCredentials.username" required placeholder="Choose a username">
+        </div>
+
+        <div class="input-group">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" name="email" [(ngModel)]="signupCredentials.email" required placeholder="Enter email">
+        </div>
+
+        <div class="input-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" name="password" [(ngModel)]="signupCredentials.password" required minlength="6" placeholder="Create password">
+        </div>
+
+        <button type="submit" [disabled]="!signupForm.form.valid || isLoading()">
+          {{ isLoading() ? 'Creating...' : 'Sign Up' }}
+        </button>
+      </form>
+    </div>
+  </div>
+}
