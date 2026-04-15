@@ -11,7 +11,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Build the Java backend
-FROM eclipse-temurin:21-jdk-focal AS backend-build
+FROM eclipse-temurin:21-jdk AS backend-build
 WORKDIR /app
 
 # Copy the Maven wrapper files to the container
@@ -31,7 +31,7 @@ RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Stage 3: Run the minimal application
-FROM eclipse-temurin:21-jre-focal
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=backend-build /app/target/ticket-login-backend-0.0.1-SNAPSHOT.jar app.jar
 
